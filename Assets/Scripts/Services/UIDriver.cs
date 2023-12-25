@@ -339,14 +339,14 @@ namespace Services
         }
     }
 
-    public class HoldData
+    public struct HoldData
     {
         public Action OnHoldStart;
         public Action OnHoldFrame;
         public Action OnHoldRelease;
         public float ThresholdTime;
 
-        public HoldData(Action onStart, Action onFrame, Action onRelease, float holdTime)
+        public HoldData(Action onStart, Action onFrame, Action onRelease, float holdTime = 0)
         {
             OnHoldStart = onStart;
             OnHoldFrame = onFrame;
@@ -355,20 +355,21 @@ namespace Services
         }
     }
 
-    public class FocusData
+    public struct FocusData
     {
         public Action OnFocusStart;
         public Action OnFocusEnd;
         public float ThresholdTime;
 
-        public FocusData(Action onStart, Action onEnd)
+        public FocusData(Action onStart, Action onEnd, float thresholdTime = 0)
         {
             OnFocusStart = onStart;
             OnFocusEnd = onEnd;
+            ThresholdTime = thresholdTime;
         }
     }
 
-    public class ScrollData
+    public struct ScrollData
     {
         public Action OnScrollUp;
         public Action OnScrollDown;
