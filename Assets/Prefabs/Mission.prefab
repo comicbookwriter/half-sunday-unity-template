@@ -249,6 +249,7 @@ MonoBehaviour:
   AddRequirementRadial: {fileID: 7887137242711768143}
   AddRewardRadial: {fileID: 7338119955464044990}
   MissionDataPanel: {fileID: 609826818340479513}
+  Image: {fileID: 6558090793143834239}
 --- !u!1 &7887137242711768143
 GameObject:
   m_ObjectHideFlags: 0

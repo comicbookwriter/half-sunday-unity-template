@@ -1,17 +1,17 @@
 using Services;
 using UnityEngine;
 
-public class NewMissionButton : InputInteractable
+public class NewMissionButton : UIInteractable
 {
     [SerializeField]
     private GameObject MissionPrefab;
 
-    private InputService InputService;
+    private UIDriver InputService;
     public void Start()
     {
         if (ServiceLocator.TryGetService(out InputService))
         {
-            InputService.RegisterForLeftTap(this, GenerateNewMission);
+            InputService.RegisterForTap(this, GenerateNewMission);
         }
         else
         {
