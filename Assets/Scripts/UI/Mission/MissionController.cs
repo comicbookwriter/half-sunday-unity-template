@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UI.Model.Templates;
 using UnityEngine;
 
 namespace UI.Mission
@@ -16,14 +17,15 @@ namespace UI.Mission
             Color.red
         };
 
-        public MissionController(MissionView view, Transform parent, MissionModel model) : base(view, parent, model) =>
+        public MissionController(MissionView view, MissionModel model) : base(view, model) =>
             Setup();
         
-        public MissionController(MissionView view, Transform parent) : base(view, parent) =>
+        public MissionController(MissionTemplate template, MissionModel model, Transform parent = null) : base(template, parent, model) =>
             Setup();
 
         public void Setup()
         {
+            Debug.Log(View.name);
             UiDriver.RegisterForHold(View, OnMissionDragStart, null, OnMissionDrag, 0f);
             UiDriver.RegisterForAltTap(View, Close);
             UiDriver.RegisterForFocus(View, ShowMissionDataPanel, HideMissionDataPanel);

@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10243bf86ec14ff9a85e5cd39d98a40f, type: 3}
+  m_Name: MissionTemplate
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 2778840966962670912, guid: b5c9e6daad1f7ac47a92ba6844ec0160, type: 3}

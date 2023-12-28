@@ -1,5 +1,5 @@
 using UI.Mission;
-using UnityEngine;
+using UI.Model.Templates;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -19,7 +19,7 @@ namespace Services
         public InputActionReference scroll;
         public InputActionReference back;
 
-        public MissionSelectorView MissionSelectorPrefabDEBUG;
+        public MissionSelectorTemplate MissionSelectorPrefabDEBUG;
 
         private UIDriver Controller;
 

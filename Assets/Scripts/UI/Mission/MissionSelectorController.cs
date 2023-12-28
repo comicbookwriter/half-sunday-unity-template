@@ -1,4 +1,4 @@
-using UnityEditor.Profiling;
+using UI.Model.Templates;
 using UnityEngine;
 
 namespace UI.Mission
@@ -7,7 +7,7 @@ namespace UI.Mission
     {
         private MissionModel DefaultMissionModel;
         public MissionSelectorController(MissionSelectorView view) : base(view) => Setup();
-        public MissionSelectorController(MissionSelectorView view, Transform parent) : base(view, parent) => Setup();
+        public MissionSelectorController(MissionSelectorTemplate template, Transform parent) : base(template, parent) => Setup();
 
         public void Setup()
         {
@@ -25,7 +25,7 @@ namespace UI.Mission
 
         private void CreateMission()
         {
-            MissionController newMission = new (View.MissionPrefabTemplate, null, DefaultMissionModel);
+            MissionController newMission = new (View.MissionPrefabTemplate, DefaultMissionModel);
             newMission.Show();
             AddChild(newMission);
         }

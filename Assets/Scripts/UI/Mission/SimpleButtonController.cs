@@ -1,4 +1,5 @@
 using System;
+using UI.Model.Templates;
 using UnityEngine;
 
 namespace UI.Mission
@@ -10,7 +11,7 @@ namespace UI.Mission
         public SimpleButtonController(SimpleButtonView view, Action onClick) : base(view) => 
             Setup(onClick);
 
-        public SimpleButtonController(SimpleButtonView view, Action onClick, Transform parent) : base(view, parent) =>
+        public SimpleButtonController(SimpleButtonTemplate template, Action onClick, Transform parent) : base(template, parent) =>
             Setup(onClick);
 
         public void Setup(Action onClick)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Services;
@@ -25,17 +24,12 @@ public abstract class UIController<TStaticView> : IUIController where TStaticVie
         View = view;
     }
     
-    public UIController(TStaticView view, Transform parent)
+    public UIController(UIViewTemplate<TStaticView> template, Transform parent)
     {
         GetServices();
-        View = GameObject.Instantiate(view, parent == null ? UiDriver.Root.transform : parent);
+        View = GameObject.Instantiate(template.Prefab, parent == null ? UiDriver.Root.transform : parent);
     }
-
-    private TStaticView CreateViewFromPrefabName(string prefabName)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     private void GetServices()
     {
         if (!ServiceLocator.TryGetService(out UiDriver) && GetType() != typeof(UIDriver))
@@ -111,18 +105,12 @@ public abstract class UIController<TView, TModel> : IUIController where TView : 
         Model = model;
         View.UpdateViewWithModel(Model);
     }
-    public UIController(TView view, Transform parent, TModel model = default)
+    public UIController(UIViewTemplate<TView> template, Transform parent, TModel model = default)
     {
         GetServices();
-        View = GameObject.Instantiate(view, parent == null ? UiDriver.Root : parent);
+        View = GameObject.Instantiate(template.Prefab, parent == null ? UiDriver.Root.transform : parent);
         Model = model;
         View.UpdateViewWithModel(Model);
-
-    }
-
-    private TView CreateViewFromPrefabName(string prefabName)
-    {
-        throw new NotImplementedException();
     }
 
     private void GetServices()
@@ -169,7 +157,7 @@ public abstract class UIController<TView, TModel> : IUIController where TView : 
         CloseChildren();
         LogicalParent.RemoveChild(this);
         UiDriver.UnregisterForAll(View);
-        GameObject.Destroy(View.gameObject);
+        View.Destroy();
     }
 
     protected virtual void CloseChildren()

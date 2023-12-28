@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7158783241902848386}
   - component: {fileID: 7158783241902848385}
   m_Layer: 5
-  m_Name: MissionUIPanel
+  m_Name: MissionSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   Priority: 2
   CreateMissionButton: {fileID: 4704193042001681927}
   CloseButton: {fileID: 7259133925594176439}
-  MissionPrefabTemplate: {fileID: 2778840966962670912, guid: b5c9e6daad1f7ac47a92ba6844ec0160, type: 3}
+  MissionPrefabTemplate: {fileID: 11400000, guid: 01ca2d367d0edc34ea8c4f230ad293be, type: 2}
 --- !u!1001 &5092482731607841285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -219,6 +219,10 @@ PrefabInstance:
       propertyPath: m_text
       value: X
       objectReference: {fileID: 0}
+    - target: {fileID: 2735155561474726937, guid: 26f97a68298b7de4c94d9bface4d5614, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2735155561474726942, guid: 26f97a68298b7de4c94d9bface4d5614, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -285,11 +289,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2735155561474726942, guid: 26f97a68298b7de4c94d9bface4d5614, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 315.59607
+      value: 240.4
       objectReference: {fileID: 0}
     - target: {fileID: 2735155561474726942, guid: 26f97a68298b7de4c94d9bface4d5614, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 27.892685
+      value: 29.7
       objectReference: {fileID: 0}
     - target: {fileID: 2735155561474726942, guid: 26f97a68298b7de4c94d9bface4d5614, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

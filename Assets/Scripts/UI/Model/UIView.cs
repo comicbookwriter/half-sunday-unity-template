@@ -1,5 +1,3 @@
-using UI.Model;
-
 public abstract class UIView<TModel> : UIInteractable where TModel : struct, IUIModel
 {
     public bool IsDestroyed { get; private set; }
@@ -10,6 +8,6 @@ public abstract class UIView<TModel> : UIInteractable where TModel : struct, IUI
         IsDestroyed = true;
         Destroy(gameObject);
     }
-    
+
     public abstract void UpdateViewWithModel(TModel model);
 }

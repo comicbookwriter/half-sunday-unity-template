@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 // This is basically my version of InputSystemUIInputModule, because the existing one has an extremely rigid set
 // of actions that I don't particularly care for + raycasting is indiscriminate
@@ -23,16 +22,16 @@ namespace Services
 
         private bool holding = false;
         
-        private readonly Dictionary<GameObject, Action> tapRegistrar = new();
-        private readonly Dictionary<GameObject, Action> altTapRegistrar = new();
-        private readonly Dictionary<GameObject, Action> backRegistrar = new();
-        private readonly Dictionary<GameObject, HoldData> holdRegistrar = new();
-        private readonly Dictionary<GameObject, HoldData> altHoldRegistrar = new();
-        private readonly Dictionary<GameObject, FocusData> focusRegistrar = new();
-        private readonly Dictionary<GameObject, ScrollData> scrollRegistrar = new();
+        private readonly Dictionary<UIInteractable, Action> tapRegistrar = new();
+        private readonly Dictionary<UIInteractable, Action> altTapRegistrar = new();
+        private readonly Dictionary<UIInteractable, Action> backRegistrar = new();
+        private readonly Dictionary<UIInteractable, HoldData> holdRegistrar = new();
+        private readonly Dictionary<UIInteractable, HoldData> altHoldRegistrar = new();
+        private readonly Dictionary<UIInteractable, FocusData> focusRegistrar = new();
+        private readonly Dictionary<UIInteractable, ScrollData> scrollRegistrar = new();
 
-        private GameObject _activeObject;
-        public GameObject ActiveObject
+        private UIInteractable _activeObject;
+        public UIInteractable ActiveObject
         {
             get { return _activeObject; }
             set
@@ -91,72 +90,72 @@ namespace Services
 
         public void RegisterForTap(UIInteractable target, Action onClick)
         {
-            tapRegistrar.Add(target.gameObject, onClick);
+            tapRegistrar.Add(target, onClick);
         }
 
         public void UnregisterForTap(UIInteractable target)
         {
-            tapRegistrar.Remove(target.gameObject);
+            tapRegistrar.Remove(target);
         }
         
         public void RegisterForAltTap(UIInteractable target, Action onClick)
         {
-            altTapRegistrar.Add(target.gameObject, onClick);
+            altTapRegistrar.Add(target, onClick);
         }
         
         public void UnregisterForAltTap(UIInteractable target)
         {
-            altTapRegistrar.Remove(target.gameObject);
+            altTapRegistrar.Remove(target);
         }
         
         public void RegisterForFocus(UIInteractable target, Action onFocusStart, Action onFocusEnd)
         {
-            focusRegistrar.Add(target.gameObject, new FocusData(onFocusStart, onFocusEnd));
+            focusRegistrar.Add(target, new FocusData(onFocusStart, onFocusEnd));
         }
         
         public void UnregisterForFocus(UIInteractable target)
         {
-            focusRegistrar.Remove(target.gameObject);
+            focusRegistrar.Remove(target);
         }
         
         public void RegisterForScroll(UIInteractable target, Action onScrollUp, Action onScrollDown)
         {
-            scrollRegistrar.Add(target.gameObject, new ScrollData(onScrollUp, onScrollDown));
+            scrollRegistrar.Add(target, new ScrollData(onScrollUp, onScrollDown));
         }
         
         public void UnregisterForScroll(UIInteractable target)
         {
-            focusRegistrar.Remove(target.gameObject);
+            focusRegistrar.Remove(target);
         }
         
         public void RegisterForHold(UIInteractable target, Action onHold, Action onRelease, Action onFrameHeld, float holdTime = 0.5f)
         {
-            holdRegistrar.Add(target.gameObject, new HoldData(onHold, onFrameHeld, onRelease, holdTime));
+            holdRegistrar.Add(target, new HoldData(onHold, onFrameHeld, onRelease, holdTime));
         }
         
         public void UnregisterForHold(UIInteractable target)
         {
-            holdRegistrar.Remove(target.gameObject);
+            holdRegistrar.Remove(target);
         }
         
         public void RegisterForAltHold(UIInteractable target, Action onHold, Action onRelease, Action onFrameHeld, float holdTime = 0.5f)
         {
-            altHoldRegistrar.Add(target.gameObject, new HoldData(onHold, onFrameHeld, onRelease, holdTime));
+            altHoldRegistrar.Add(target, new HoldData(onHold, onFrameHeld, onRelease, holdTime));
         }
 
         public void UnregisterForAltHold(UIInteractable target)
         {
-            altHoldRegistrar.Remove(target.gameObject);
+            altHoldRegistrar.Remove(target);
         }
         
         public void RegisterForBack(UIInteractable target, Action onBack)
         {
-            backRegistrar.Add(target.gameObject, onBack);
+            backRegistrar.Add(target, onBack);
         }
 
         public void UnregisterForBack(UIInteractable target)
         {
-            backRegistrar.Remove(target.gameObject);
+            backRegistrar.Remove(target);
         }
 
         public void UnregisterForAll(UIInteractable target)
@@ -170,7 +169,7 @@ namespace Services
             UnregisterForAltHold(target);
         }
 
-        private GameObject RayCastToFindObjectAtMouse()
+        private UIInteractable RayCastToFindObjectAtMouse()
         {
             List<RaycastResult> results = new();
             UIInteractable castTarget = null;
@@ -185,7 +184,7 @@ namespace Services
                 }
             }
 
-            if (castTarget != null) return castTarget.gameObject;
+            if (castTarget != null) return castTarget;
             return null;
         }
         
@@ -203,7 +202,7 @@ namespace Services
                 ActiveObject = RayCastToFindObjectAtMouse();
         }
 
-        private void OnFocusStart(GameObject focusObj)
+        private void OnFocusStart(UIInteractable focusObj)
         {
             if (!focusObj) return;
             if (focusRegistrar.TryGetValue(focusObj, out FocusData onHover))
@@ -212,7 +211,7 @@ namespace Services
             }
         }
         
-        private void OnFocusEnd(GameObject focusObj)
+        private void OnFocusEnd(UIInteractable focusObj)
         {
             if (!focusObj) return;
             if (focusRegistrar.TryGetValue(focusObj, out FocusData onHover))
@@ -240,7 +239,7 @@ namespace Services
             if (InputMode != UIInputMode.Direct) return;
             Vector2 direction = context.ReadValue<Vector2>().normalized;
 
-            GameObject nextElement = null;
+            UIInteractable nextElement = null;
             while (nextElement == null && PointerInBounds(pointerData))
             {
                 pointerData.position += direction;
