@@ -12,5 +12,5 @@ public abstract class UIInteractable : MonoBehaviour
         VeryHigh
     }
 
-    public UIInteractionPriority Priority { get; } = UIInteractionPriority.Default;
+    public UIInteractionPriority Priority = UIInteractionPriority.Default;
 }

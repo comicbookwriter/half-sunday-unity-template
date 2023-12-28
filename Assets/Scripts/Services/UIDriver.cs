@@ -17,23 +17,11 @@ namespace Services
         Global // All registered objects are always active; not sure when we would use this, but its easy to code
     }
     
-    public class UIDriver : MonoBehaviour, IService
+    public class UIDriver : UIController<UIRoot>, IService
     {
-        [SerializeField] private GraphicRaycaster uIRoot;
-        [SerializeField] private PlayerInput input;
         private PointerEventData pointerData;
 
         private bool holding = false;
-
-        public InputActionReference point; 
-        public InputActionReference navigate; 
-        public InputActionReference tap; 
-        public InputActionReference hold; 
-        public InputActionReference altTap;
-        public InputActionReference altHold;
-        public InputActionReference scroll;
-        public InputActionReference back;
-        
         
         private readonly Dictionary<GameObject, Action> tapRegistrar = new();
         private readonly Dictionary<GameObject, Action> altTapRegistrar = new();
@@ -64,23 +52,25 @@ namespace Services
 
         private InputDevice currentInputDevice;
         public UIInputMode InputMode;
+        public Transform Root;
 
         private const string GAMEPAD_CONTROL_GROUP = "Gamepad";
         
-        private void Awake()
+        public UIDriver(UIRoot root) : base(root)
         {
             ServiceLocator.RegisterService(this);
             pointerData = new PointerEventData(EventSystem.current);
+            Root = root.transform;
             
-            point.action.performed += OnPointerMove;
-            tap.action.performed += OnTap;
-            hold.action.performed += ToggleHold;
-            altTap.action.performed += OnAltTap;
-            //altHold.action.performed += OnAltHold; //TODO implement right hold later
-            scroll.action.performed += OnScroll;
-            navigate.action.performed += OnNavigate;
-            back.action.performed += OnBack;
-            input.onControlsChanged += OnControlsChanged;
+            root.point.action.performed += OnPointerMove;
+            root.tap.action.performed += OnTap;
+            root.hold.action.performed += ToggleHold;
+            root.altTap.action.performed += OnAltTap;
+            //root.altHold.action.performed += OnAltHold; //TODO implement right hold later
+            root.scroll.action.performed += OnScroll;
+            root.navigate.action.performed += OnNavigate;
+            root.back.action.performed += OnBack;
+            root.input.onControlsChanged += OnControlsChanged;
         }
 
         // TODO: Flexible controller support still requires a LOT of work here
@@ -184,7 +174,7 @@ namespace Services
         {
             List<RaycastResult> results = new();
             UIInteractable castTarget = null;
-            uIRoot.Raycast(pointerData, results);
+            View.raycaster.Raycast(pointerData, results);
             foreach (RaycastResult result in results)
             {
                 // this should be done with a layer, but then I would need a physics raycaster?
@@ -296,7 +286,7 @@ namespace Services
                 if (InputMode != UIInputMode.Global && !ActiveObject) return;
                 if (holdRegistrar.TryGetValue(ActiveObject, out HoldData callbacks))
                 {
-                    StartCoroutine(Hold(callbacks));
+                    View.StartCoroutine(Hold(callbacks));
                 }
             }
         }

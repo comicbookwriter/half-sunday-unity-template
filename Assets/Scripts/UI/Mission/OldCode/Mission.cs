@@ -44,17 +44,25 @@ public class Mission : UIInteractable
             InputService.RegisterForHold(this, OnMissionDragStart, null, OnMissionDrag, 0f);
             InputService.RegisterForAltTap(this, ToggleMissionRadial);
             InputService.RegisterForFocus(this, ShowMissionDataPanel, HideMissionDataPanel);
-            
-            int Mod(int x, int m) => (x%m + m)%m;
-            InputService.RegisterForScroll(this, () => Image.color = Colors[Mod(++colorIndex, Colors.Count)], 
-                () => Image.color = Colors[Mod(--colorIndex, Colors.Count)]);
-            
+            InputService.RegisterForScroll(this, OnScrollUp, OnScrollDown);
             InputService.RegisterForBack(this, Clear);
         }
         else
         {
             Debug.LogError("InputService not found when instantiating Mission.");
         }
+    }
+    
+    private int Mod(int x, int m) => (x%m + m)%m;
+
+    private void OnScrollUp()
+    {
+        Image.color = Colors[Mod(--colorIndex, Colors.Count)];
+    }
+        
+    private void OnScrollDown()
+    {
+        Image.color = Colors[Mod(++colorIndex, Colors.Count)];
     }
 
     private void OnMissionDragStart()
