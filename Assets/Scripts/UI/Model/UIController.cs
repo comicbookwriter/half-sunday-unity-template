@@ -32,7 +32,7 @@ public abstract class UIController<TStaticView> : IUIController where TStaticVie
     
     private void GetServices()
     {
-        if (!ServiceLocator.TryGetService(out UiDriver) && GetType() != typeof(UIDriver))
+        if (GetType() != typeof(UIDriver) && !ServiceLocator.TryGetService(out UiDriver))
             Debug.LogError($"InputService not found when instantiating {GetType()}");
     }
     
